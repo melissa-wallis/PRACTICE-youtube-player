@@ -3,6 +3,7 @@
 For this application, we will be putting all our skills together to create a youtube player that allows users to filter on video type, create entries, and delete entries.
 
 [Sample site](https://drt-youtube-player.netlify.app/#)
+[Wireframe] (https://www.figma.com/file/a9u6jgrRWvhFZf9Rextjhv/Jam?node-id=0%3A1&t=N7FSv8KwzFESE02J-0)
 
 We will be using the following skills to build this app:
 - Data as Entities

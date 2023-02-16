@@ -39,15 +39,18 @@ const data = [
 ];
 
 // *********  UTILITY FUNCTIONS  ********* //
+//what is this function doing??
 const renderToDom = (divId, textToRender) => {
-  const selectedElement = document.querySelector(divId);
-  selectedElement.innerHTML = textToRender;
+  const selectedElement = document.querySelector(divId); //returns the first divId element
+  selectedElement.innerHTML = textToRender; //changes the inner HTML on selected element based on what you pass in textToRender (a string of HTML)
+  //know the id of the thing on the dom (divId) and what we want to put in it (text to render)
 };
 
 // *********  HTML COMPONENT FUNCTIONS  ********* //
 // *********  These are all built out so we can focus on the JS  ********* //
 
 // Add Video Button / Modal
+// function that has a DOM string inside of it
 const videoBtnModal = () => {
   const domString = `
     <!-- Button trigger modal -->
@@ -104,11 +107,12 @@ const videoBtnModal = () => {
       </div>
     </div>
   `;
-  renderToDom('#createBtnContainer', domString);
+  renderToDom('#createBtnContainer', domString); //passing renderToDom function the divId of the element we want to target (create button container) and what we're passing (the dom string of html button modal) renders the Add Video button
 };
 
 // Video component with default arg value
 // = 'cNjIUSDnb9k'
+//renders the video player on the DOM, expects a video ID as an argument
 const videoPlayer = (videoId) => {
   const domString = `
   <iframe src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -132,6 +136,8 @@ const filterButtons = () => {
 };
 
 // Cards
+//Requires array argument, have to loop over our data to get the cards to render on the DOM
+//start with the DOM string being empty, every time it loops through it adds and reassigns the DOM string
 const cardsOnDom = (array) => {
   let domString = '';
   for (const item of array) {
@@ -210,6 +216,7 @@ const eventListeners = () => {
 };
 
 // *********  FUNCTION TO START APPLICATION  *********  //
+//iterate through all the functions to render all elements on the DOM
 const startApp = () => {
   videoBtnModal();
   videoPlayer();
