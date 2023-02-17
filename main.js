@@ -112,8 +112,8 @@ const videoBtnModal = () => {
 
 // Video component with default arg value
 // = 'cNjIUSDnb9k'
-//renders the video player on the DOM, expects a video ID as an argument
-const videoPlayer = (videoId) => {
+//renders the video player on the DOM, expects a video ID as an argument. We set a default value do this so that its ready to play one of the videos on page load so it doesnt appear broken. Without a video id string the player doenst know what to do and appears broken because its waiting for input.
+const videoPlayer = (videoId = 'cNjIUSDnb9k') => {
   const domString = `
   <iframe src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   `;
@@ -138,6 +138,7 @@ const filterButtons = () => {
 // Cards
 //Requires array argument, have to loop over our data to get the cards to render on the DOM
 //start with the DOM string being empty, every time it loops through it adds and reassigns the DOM string
+//Dynamically adding the IDs on to the buttons using string interpolation so that the IDs are unique!!! (deleting the right video, watching the right video)
 const cardsOnDom = (array) => {
   let domString = '';
   for (const item of array) {
@@ -167,9 +168,28 @@ const eventListeners = () => {
   const formModal = new bootstrap.Modal(document.querySelector('#add-video'));
   
   // FILTER BUTTON ROW
+  //data = the array with all the stuff in it
   document.querySelector('#filterContainer').addEventListener('click', (e) => {
-    console.log("You clicked a filter button", e.target.id);
+    // console.log("You clicked a filter button", e.target.id);
     // filter on category (either use .filter or a loop)
+    if (e.target.id === "clear") {
+      cardsOnDom(data); //if the id on the event is clear we want to display all cards on the DOM
+    } else if (e.target.id === "favorite") {
+      const favs = data.filter(vid => vid.favorite === true);
+
+      //what .filter is doing:
+      //const array = [];
+      //for (const vid of data) {
+      //  if (vid.favorite === true) {
+      //    array.push(vid)
+      //    }
+      // }
+
+      cardsOnDom(favs);
+    } else if (e.target.id) {
+      const topics = data.filter(taco => taco.category === e.target.id);
+      cardsOnDom(topics)
+    }
     // rerender DOM with new array (use the cardsOnDom function)
   });
 
@@ -178,24 +198,34 @@ const eventListeners = () => {
     // check to make sure e.target.id is not empty
     if (e.target.id) {
       // get the video ID off the button ID
+
+      //const videoStuff = e.target.id.split("--")
+      //videoStuff is an array with two elements, ['delete', 'cNjIUSDnb9k'], [0] is the type of button watch or delete and [1] is the unique id of the button. So we can deconstruct the elements in this array and give them their own variables like below:
+      const [method, videoId] = e.target.id.split("--")
+
+
       // find the index of the object in the array
+      const index = data.findIndex(taco => taco.videoId === videoId)
+
 
       // only listen for events with "watch" or "delete" included in the string
 
       // if watch: grab the ID and rerender the videoPlayer with that ID as an argument
+      // if the button they click includes watch in its array run the videoPlayer function with that videoId passed as the argument
       if (e.target.id.includes('watch')) {
-        console.log("Pressed Watch Button")        
+        videoPlayer(videoId)      
         
         
         // scroll to top of page
         document.location = '#';
       }
 
-      // if delete: find the index of item in array and splice
+      // if delete: find the index of item in array and splice (edit the )
       // NOTE: if 2 videos have the same videoId, this will delete the first one in the array
       if (e.target.id.includes('delete')) {
-        console.log("Delete Button Pressed")
+        data.splice(index, 1);
         // rerender DOM with updated data array (use the cardsOnDom function)
+        cardsOnDom(data);
       }
     }
   });
@@ -222,7 +252,7 @@ const startApp = () => {
   videoPlayer();
   filterButtons();
   cardsOnDom(data);
-  // eventListeners(); // always last
+  eventListeners(); // always last
 };
 
 startApp();
