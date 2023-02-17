@@ -39,7 +39,7 @@ const data = [
 ];
 
 // *********  UTILITY FUNCTIONS  ********* //
-//what is this function doing??
+
 const renderToDom = (divId, textToRender) => {
   const selectedElement = document.querySelector(divId); //returns the first divId element
   selectedElement.innerHTML = textToRender; //changes the inner HTML on selected element based on what you pass in textToRender (a string of HTML)
@@ -47,7 +47,6 @@ const renderToDom = (divId, textToRender) => {
 };
 
 // *********  HTML COMPONENT FUNCTIONS  ********* //
-// *********  These are all built out so we can focus on the JS  ********* //
 
 // Add Video Button / Modal
 // function that has a DOM string inside of it
@@ -214,8 +213,6 @@ const eventListeners = () => {
       // if the button they click includes watch in its array run the videoPlayer function with that videoId passed as the argument
       if (e.target.id.includes('watch')) {
         videoPlayer(videoId)      
-        
-        
         // scroll to top of page
         document.location = '#';
       }
@@ -235,9 +232,17 @@ const eventListeners = () => {
   form.addEventListener('submit', (e) => {
     e.preventDefault(); // this goes in EVERY form submit to prevent page reload
     // grab the values from the form inputs and create an object
+    const newVideoObj = {
+      videoId: document.querySelector('#videoId').value,
+      title: document.querySelector('#title').value,
+      category: document.querySelector('#category').value,
+      favorite: document.querySelector('#favorite').checked, //.checked returns T/F for checkbox
+    }
+
     // push that object to the data array    
+    data.push(newVideoObj);
     // rerender cards using the cardsOnDom function and pass it the updated data array
-    
+    cardsOnDom(data);
     
     // Close modal and reset form
     formModal.hide()
